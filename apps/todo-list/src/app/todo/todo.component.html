@@ -1,0 +1,52 @@
+<nz-layout class="layout">
+  <nz-header>
+    <div class="logo">Binh Pham</div>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="'horizontal'">
+      <li nz-menu-item class="active"><a [routerLink]="['todo']">My Todo</a></li>
+    </ul>
+  </nz-header>
+  <nz-content>
+    <nz-breadcrumb>
+      <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+      <nz-breadcrumb-item>Todo</nz-breadcrumb-item>
+    </nz-breadcrumb>
+    <div class="todo-content">
+      <div nz-row>
+        <div nz-col nzSpan="12">
+          <nz-input-group nzSearch nzSize="large" [nzSuffix]="suffixButton">
+            <input type="text" (keydown.enter)="addTodo()" nz-input placeholder="todo description" [(ngModel)]="todoValue">
+          </nz-input-group>
+          <ng-template #suffixButton>
+            <button nz-button nzType="primary" nzSearch nzSize="large" [disabled]="!todoValue"  (click)="addTodo()">Add Todo</button>
+          </ng-template>
+        </div>
+        <div nz-col nzSpan="24" class="task-row">
+          Todo Tasks ()
+        </div>
+        <div nz-col nzSpan="24" *ngFor="let todo of todoLists$ | async" class="task-row">
+          <div *ngIf="!todo.checked">
+          <label nz-checkbox (ngModelChange)="valueChange(todo)" [ngModel]="todo.checked" [class.underline]="todo.checked" >{{todo.value}}</label>
+          <span class="created-time">created at {{todo.created|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+            <i (click)="removeTodo(todo)" nz-icon [nzType]="'delete'" [nzTheme]="'fill'"></i>
+
+          </div>
+        </div>
+        <div nz-col nzSpan="24" class="task-row">
+          Completed Tasks  ()
+        </div>
+        <div nz-col nzSpan="24" *ngFor="let complete of completedList" class="task-row">
+          <div *ngIf="complete.checked">
+          <label nz-checkbox nzDisabled [ngModel]="complete.checked"></label>
+          <span class="underline">
+            {{complete.value}}
+            <span class="created-time">completed at {{complete.created|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+          </span>
+            <i (click)="removeTodo(complete)" nz-icon [nzType]="'delete'" [nzTheme]="'fill'"></i>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-content>
+  <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Binh Pham</nz-footer>
+</nz-layout>
